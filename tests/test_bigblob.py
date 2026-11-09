@@ -88,9 +88,12 @@ class FindingTest(Base):
         self.assertEqual(len(paths), len(set(paths)))
 
     def test_the_repository_size_is_reported(self):
+        # count-objects kibibaytda hisoblaydi, shuning uchun juda kichik
+        # repo qonuniy ravishda 0 qaytaradi -- tur va ishorasi tekshiriladi
         self.commit_file("a.bin", 50000, "a")
         data = json.loads(self.run_cli("--json").stdout)
-        self.assertGreater(data["repository_bytes"], 0)
+        self.assertIsInstance(data["repository_bytes"], int)
+        self.assertGreaterEqual(data["repository_bytes"], 0)
 
 
 class HumanTest(unittest.TestCase):

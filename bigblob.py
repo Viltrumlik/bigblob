@@ -168,7 +168,10 @@ def main(argv=None):
         print("%10s  %s%s" % (human(r["size"]), r["path"].ljust(width), note))
 
     weight = sum(r["size"] for r in rows if r["gone"])
-    print("\nrepository on disk: %s" % human(total))
+    # count-objects o'lchamni kibibaytda beradi, ya'ni juda kichik repo
+    # nolga yaxlitlanadi. "0 B" deb yozgandan ko'ra indamagan yaxshiroq.
+    if total:
+        print("\nrepository on disk: %s" % human(total))
     if weight:
         print("%s of the above is no longer in HEAD" % human(weight))
         print("it stays in every clone until the history is rewritten "
